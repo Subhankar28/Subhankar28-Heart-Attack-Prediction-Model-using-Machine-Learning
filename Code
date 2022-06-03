@@ -1,0 +1,26 @@
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score
+from sklearn.metrics import confusion_matrix
+from sklearn.metrics import classification_report
+data= pd.read_csv('dataset.csv')
+data.head()
+y= data['target']
+x=data.drop('target',axis=1)
+print(x.head())
+print(y.head())
+x_train, x_test, y_train, y_test=train_test_split(x,y,test_size=0.2,random_state=42)
+scaler=StandardScaler()
+scale= scaler.fit(x_train)
+x_train= scale.transform(x_train)
+x_test= scale.transform(x_test)
+model= LogisticRegression()
+model.fit(x_train, y_train)
+pred= model.predict(x_test)
+score= accuracy_score(y_test, pred)
+score
+confusion_matrix(y_test, pred)
+matrix=classification_report(y_test, pred)
+print('Classification report:\n', matrix)
